@@ -19,7 +19,6 @@ object Counter {
           Behaviors.same
       }
     }
-
     updated(0)
 
   }
