@@ -26,7 +26,7 @@ import pekko.stream.scaladsl.Source
 import pekko.actor.typed.ActorSystem
 
 private case class UserActor(
-    currentWorkspace: Option[IdWorkspace] = None
+    id: IdUser
 )(using val context: ActorContext[UserActor.Action])
     extends UserActorMixin {
   import UserActor.*
@@ -56,9 +56,9 @@ private case class UserActor(
 }
 
 object UserActor {
-  def apply(): Behavior[UserActor.Action] =
+  def apply(id: IdUser): Behavior[UserActor.Action] =
     Behaviors.setup { implicit context =>
-      new UserActor().behaviors
+      new UserActor(id).behaviors
     }
 
   sealed trait Action
