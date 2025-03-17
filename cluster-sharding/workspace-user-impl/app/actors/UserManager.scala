@@ -10,16 +10,23 @@ object UserManager {
   final case class Remove(actor: ActorRef[UserActor.Action]) extends Action
   case object Terminate                                      extends Action
 
-  def apply(idUser: String): Behavior[Action] = {
+  def apply(idUser: IdUser): Behavior[Action] = {
     def states(actors: Seq[ActorRef[UserActor.Action]]): Behavior[Action] = {
       Behaviors.setup { context =>
         Behaviors.receiveMessage[Action] {
+
           case Create(actor) =>
             states(actors :+ actor)
+
+          case Remove(actor) if actors.length == 1 =>
+            Behaviors.stopped
+
           case Remove(actor) =>
             states(actors.filter(_ != actor))
+
           case Terminate =>
             Behaviors.stopped
+
         }
       }
     }
