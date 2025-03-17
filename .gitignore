@@ -3,3 +3,6 @@
 .vscode/settings.json
 .metals/metals.log
 .metals/metals.mv.db
+cluster-sharding/.metals/metals.lock.db
+cluster-sharding/.metals/metals.lock.db
+cluster-sharding/.metals/metals.lock.db
