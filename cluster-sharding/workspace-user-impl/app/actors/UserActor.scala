@@ -26,7 +26,8 @@ import pekko.stream.scaladsl.Source
 import pekko.actor.typed.ActorSystem
 
 private case class UserActor(
-    id: IdUser
+    id: IdUser,
+    currentIdWorkspace: Option[IdWorkspace] = None
 )(using val context: ActorContext[UserActor.Action])
     extends UserActorMixin {
   import UserActor.*
@@ -82,7 +83,7 @@ object UserActor {
 
 }
 
-sealed trait UserActorMixin {
+private trait UserActorMixin {
 
   implicit def system: ActorSystem[Nothing]
 
