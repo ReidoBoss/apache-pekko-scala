@@ -15,32 +15,32 @@ object WorkspaceUserManager {
   ) extends Action
   case object Terminate extends Action
 
-  def apply(idWorkspace: IdWorkspace): Behavior[Action] = {
+  def apply(
+      idWorkspace: IdWorkspace
+  ): Behavior[Action] = manageWorkspaceUsers(Set.empty)
 
+  private def manageWorkspaceUsers(
+      users: Set[(IdUser, ActorRef[WorkspaceUserManager.Action])]
+  ): Behavior[Action] = {
     Behaviors.receive { (context, message) =>
-      def states(
-          users: Set[(IdUser, ActorRef[WorkspaceUserManager.Action])]
-      ): Behavior[Action] = {
-        message match
-          case Get(replyTo) =>
-            replyTo ! users
-            Behaviors.same
+      message match
+        case Get(replyTo) =>
+          replyTo ! users
+          Behaviors.same
 
-          case Create(user) =>
-            states(users + user)
+        case Create(user) =>
+          manageWorkspaceUsers(users + user)
 
-          case Remove(user) if users.size == 1 =>
-            Behaviors.stopped
+        case Remove(user) if users.size == 1 =>
+          Behaviors.stopped
 
-          case Remove(actor) =>
-            states(users.filter(_._2 != actor))
+        case Remove(actor) =>
+          manageWorkspaceUsers(users.filter(_._2 != actor))
 
-          case Terminate =>
-            Behaviors.stopped
+        case Terminate =>
+          Behaviors.stopped
 
-      }
-      states(Set.empty)
     }
-
   }
+
 }
