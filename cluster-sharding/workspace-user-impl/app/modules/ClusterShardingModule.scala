@@ -10,7 +10,7 @@ import org.apache.pekko.cluster.sharding.typed.ShardingEnvelope
 import org.apache.pekko.cluster.sharding.typed.scaladsl.EntityTypeKey
 import org.apache.pekko.cluster.sharding.typed.scaladsl.Entity
 
-import actors.UserService
+import actors.UserManager
 
 import com.google.inject.AbstractModule
 import com.google.inject.Provides
@@ -28,9 +28,9 @@ class ClusterShardingModule extends AbstractModule with PekkoGuiceSupport {
   @Singleton
   def provideUserManager(
       sharding: ClusterSharding
-  ): ActorRef[ShardingEnvelope[UserService.Action]] =
-    val TypeKey = EntityTypeKey[UserService.Action]("user-actor-manager")
+  ): ActorRef[ShardingEnvelope[UserManager.Action]] =
+    val TypeKey = EntityTypeKey[UserManager.Action]("user-actor-manager")
     sharding.init(
-      Entity(TypeKey)(entityContext => UserService(entityContext.entityId))
+      Entity(TypeKey)(entityContext => UserManager(entityContext.entityId))
     )
 }
