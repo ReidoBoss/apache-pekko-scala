@@ -1,0 +1,2 @@
+GET     /                           controllers.HealthCheckController.index()
+GET     /test                       controllers.TestController.index()
