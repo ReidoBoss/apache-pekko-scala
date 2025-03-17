@@ -9,7 +9,7 @@ package object actors {
   }
   opaque type IdWorkspace = UUID
   object IdWorkspace {
-    def apply(x: UUID): IdWorkspace = x
-
+    def apply(x: UUID): IdWorkspace        = x
+    def fromString(x: String): IdWorkspace = IdWorkspace(UUID.fromString(x))
   }
 }
