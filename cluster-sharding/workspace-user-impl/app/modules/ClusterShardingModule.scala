@@ -13,6 +13,8 @@ import org.apache.pekko.cluster.sharding.typed.scaladsl.EntityRef
 
 import actors.UserManager
 import actors.IdUser
+import actors.WorkspaceUserManager
+import actors.IdWorkspace
 
 import com.google.inject.AbstractModule
 import com.google.inject.Provides
@@ -44,10 +46,40 @@ class ClusterShardingModule extends AbstractModule with PekkoGuiceSupport {
 
   @Provides
   @Singleton
+  def initializeWorkspaceUserManager(
+      sharding: ClusterSharding
+  ) = {
+    val TypeKey =
+      EntityTypeKey[WorkspaceUserManager.Action]("WorkspaceUserManager")
+
+    val shardRegion: ActorRef[ShardingEnvelope[WorkspaceUserManager.Action]] =
+      sharding.init(
+        Entity(TypeKey)(createBehavior =
+          entityContext =>
+            WorkspaceUserManager(IdWorkspace.fromString(entityContext.entityId))
+        )
+      )
+  }
+
+  @Provides
+  @Singleton
   def provideUserManager(
       sharding: ClusterSharding
-  ): String => EntityRef[UserManager.Action] = {
-    val TypeKey = EntityTypeKey[UserManager.Action]("user-actor-manager")
-    sharding.entityRefFor(TypeKey, _)
+  ): IdUser => EntityRef[UserManager.Action] = {
+    val TypeKey = EntityTypeKey[UserManager.Action]("UserManager")
+    (idUser: IdUser) => sharding.entityRefFor(TypeKey, idUser.toString())
   }
+
+  @Provides
+  @Singleton
+  def provideWorkspaceUserManager(
+      sharding: ClusterSharding
+  ): IdWorkspace => EntityRef[WorkspaceUserManager.Action] = {
+    val TypeKey =
+      EntityTypeKey[WorkspaceUserManager.Action]("WorkspaceUserManager")
+    (idWorkspace: IdWorkspace) =>
+      sharding.entityRefFor(TypeKey, idWorkspace.toString())
+
+  }
+
 }
