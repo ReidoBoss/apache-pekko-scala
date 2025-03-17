@@ -11,6 +11,9 @@ import com.google.inject.Singleton
 
 class ActorModules extends AbstractModule with PekkoGuiceSupport {
 
+  /**
+   * Typed Actor System Injection Module
+   */
   @Provides
   @Singleton
   def provideTypedActorSystem(
