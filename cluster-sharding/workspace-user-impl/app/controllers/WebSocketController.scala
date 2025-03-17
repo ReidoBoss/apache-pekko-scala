@@ -36,16 +36,16 @@ class WebSocketController @Inject() (
     request.session.get("idUser") match
       case None => Future.successful(Left(Forbidden("Forbidden")))
       case Some(idUser) =>
-        wsFutureFlow(idUser, idFromHeader)
+        wsFutureFlow(IdUser.fromString(idUser), idFromHeader)
           .map(Right(_))
   }
 
   private def wsFutureFlow(
-      idUser: String,
+      idUser: IdUser,
       idFromHeader: String,
   ): Future[Flow[JsValue, JsValue, NotUsed]] = {
     val actorName = s"actor-$idFromHeader-$idUser"
-    val userActor = actorSystem.spawn(UserActor.apply(), actorName)
+    val userActor = actorSystem.spawn(UserActor.apply(idUser), actorName)
     userActor.ask(UserActor.Create(_))
   }
 }
