@@ -22,7 +22,8 @@ import org.apache.pekko.actor.typed.scaladsl.adapter.*
 import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.cluster.sharding.ClusterSharding
 
-import actors.*
+import actors.IdUser
+import actors.impl.*
 
 @Singleton
 class WebSocketController @Inject() (
