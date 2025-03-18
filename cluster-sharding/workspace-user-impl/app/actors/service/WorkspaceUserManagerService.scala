@@ -12,6 +12,8 @@ import org.apache.pekko.cluster.sharding.typed.scaladsl.EntityTypeKey
 import org.apache.pekko.cluster.sharding.typed.scaladsl.Entity
 import org.apache.pekko.cluster.sharding.typed.scaladsl.EntityRef
 
+import impl.*
+
 @Singleton
 class WorkspaceUserManagerService @Inject (sharding: ClusterSharding) {
   private val WorkspaceUserManagerTypeKey =
@@ -23,6 +25,7 @@ class WorkspaceUserManagerService @Inject (sharding: ClusterSharding) {
         WorkspaceUserManager(IdWorkspace.fromString(entityContext.entityId))
     )
   )
+
   def get(id: IdWorkspace): EntityRef[WorkspaceUserManager.Action] =
     sharding.entityRefFor(WorkspaceUserManagerTypeKey, id.toString())
 }
