@@ -7,7 +7,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "3.3.4"
 
-lazy val PekkoVersion = "1.0.3"
+lazy val PekkoVersion = "1.2.0-M1"
 
 libraryDependencies ++= Seq(
   guice,
