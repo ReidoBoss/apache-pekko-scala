@@ -12,6 +12,8 @@ import org.apache.pekko.cluster.sharding.typed.scaladsl.EntityTypeKey
 import org.apache.pekko.cluster.sharding.typed.scaladsl.Entity
 import org.apache.pekko.cluster.sharding.typed.scaladsl.EntityRef
 
+import impl.*
+
 @Singleton
 class UserManagerService @Inject (sharding: ClusterSharding) {
 
