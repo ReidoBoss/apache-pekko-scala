@@ -1,10 +1,11 @@
 package actors
 package impl
 
-import org.apache.pekko.actor.typed.ActorRef
-import org.apache.pekko.actor.typed.Behavior
-import org.apache.pekko.actor.typed.scaladsl.Behaviors
-import org.apache.pekko.actor.typed.Terminated
+import org.apache.pekko
+import pekko.actor.typed.ActorRef
+import pekko.actor.typed.Behavior
+import pekko.actor.typed.scaladsl.Behaviors
+import pekko.actor.typed.Terminated
 
 object WorkspaceUserManager {
   sealed trait Action
