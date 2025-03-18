@@ -14,6 +14,7 @@ import org.apache.pekko.cluster.sharding.typed.scaladsl.EntityRef
 
 @Singleton
 class UserManagerService @Inject (sharding: ClusterSharding) {
+
   private val UserManagerTypeKey =
     EntityTypeKey[UserManager.Action]("UserManager")
 
