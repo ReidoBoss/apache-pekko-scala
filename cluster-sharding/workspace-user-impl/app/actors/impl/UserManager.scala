@@ -43,8 +43,7 @@ object UserManager {
 
       }
     }
-    .receiveSignal { case (context, Terminated(actor)) =>
-      context.stop(actor)
+    .receiveSignal { case (_, Terminated(actor)) =>
       activeUsers.size match
         case 1 => Behaviors.stopped
         case _ => manageUsers(activeUsers.filterNot(_ == actor))
