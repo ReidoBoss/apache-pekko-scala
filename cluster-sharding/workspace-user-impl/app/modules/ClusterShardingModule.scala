@@ -21,6 +21,10 @@ import com.google.inject.Provides
 import com.google.inject.Singleton
 
 class ClusterShardingModule extends AbstractModule with PekkoGuiceSupport {
+  lazy val WorkspaceUserManagerTypeKey =
+    EntityTypeKey[WorkspaceUserManager.Action]("WorkspaceUserManager")
+
+  lazy val UserManagerTypeKey = EntityTypeKey[UserManager.Action]("UserManager")
 
   @Provides
   @Singleton
@@ -33,33 +37,24 @@ class ClusterShardingModule extends AbstractModule with PekkoGuiceSupport {
   def initializeUserManager(
       sharding: ClusterSharding
   ) = {
-    val TypeKey = EntityTypeKey[UserManager.Action]("UserManager")
 
-    val shardRegion: ActorRef[ShardingEnvelope[UserManager.Action]] =
-      sharding.init(
-        Entity(TypeKey)(createBehavior =
-          entityContext =>
-            UserManager(IdUser.fromString(entityContext.entityId))
-        )
+    sharding.init(
+      Entity(UserManagerTypeKey)(createBehavior =
+        entityContext => UserManager(IdUser.fromString(entityContext.entityId))
       )
+    )
   }
 
   @Provides
   @Singleton
   def initializeWorkspaceUserManager(
       sharding: ClusterSharding
-  ) = {
-    val TypeKey =
-      EntityTypeKey[WorkspaceUserManager.Action]("WorkspaceUserManager")
-
-    val shardRegion: ActorRef[ShardingEnvelope[WorkspaceUserManager.Action]] =
-      sharding.init(
-        Entity(TypeKey)(createBehavior =
-          entityContext =>
-            WorkspaceUserManager(IdWorkspace.fromString(entityContext.entityId))
-        )
-      )
-  }
+  ) = sharding.init(
+    Entity(WorkspaceUserManagerTypeKey)(createBehavior =
+      entityContext =>
+        WorkspaceUserManager(IdWorkspace.fromString(entityContext.entityId))
+    )
+  )
 
   @Provides
   @Singleton
