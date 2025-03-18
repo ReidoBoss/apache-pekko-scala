@@ -21,27 +21,11 @@ class ClusterShardingModule extends AbstractModule with PekkoGuiceSupport {
   private val WorkspaceUserManagerTypeKey =
     EntityTypeKey[WorkspaceUserManager.Action]("WorkspaceUserManager")
 
-  private val UserManagerTypeKey =
-    EntityTypeKey[UserManager.Action]("UserManager")
-
   @Provides
   @Singleton
   def provideClusterSharding(
       system: ActorSystem[?]
   ): ClusterSharding = ClusterSharding(system)
-
-  @Provides
-  @Singleton
-  def initializeUserManager(
-      sharding: ClusterSharding
-  ) = {
-
-    sharding.init(
-      Entity(UserManagerTypeKey)(createBehavior =
-        entityContext => UserManager(IdUser.fromString(entityContext.entityId))
-      )
-    )
-  }
 
   @Provides
   @Singleton
@@ -53,13 +37,6 @@ class ClusterShardingModule extends AbstractModule with PekkoGuiceSupport {
         WorkspaceUserManager(IdWorkspace.fromString(entityContext.entityId))
     )
   )
-
-  @Provides
-  @Singleton
-  def provideUserManager(
-      sharding: ClusterSharding
-  ): IdUser => EntityRef[UserManager.Action] = (idUser: IdUser) =>
-    sharding.entityRefFor(UserManagerTypeKey, idUser.toString())
 
   @Provides
   @Singleton
