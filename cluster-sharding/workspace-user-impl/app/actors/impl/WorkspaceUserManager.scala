@@ -1,4 +1,5 @@
 package actors
+package impl
 
 import org.apache.pekko.actor.typed.ActorRef
 import org.apache.pekko.actor.typed.Behavior
