@@ -23,4 +23,7 @@ class UserManagerService @Inject (sharding: ClusterSharding) {
     )
   )
 
+  def get(id: IdUser): EntityRef[UserManager.Action] =
+    sharding.entityRefFor(UserManagerTypeKey, id.toString())
+
 }
