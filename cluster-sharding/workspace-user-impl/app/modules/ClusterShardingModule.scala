@@ -19,6 +19,9 @@ import com.google.inject.Singleton
 
 class ClusterShardingModule extends AbstractModule with PekkoGuiceSupport {
 
+  /**
+   * ClusterSharding Module for Dependency Injection
+   */
   @Provides
   @Singleton
   def provideClusterSharding(
