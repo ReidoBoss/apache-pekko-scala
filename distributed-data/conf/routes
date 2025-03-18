@@ -1,0 +1,104 @@
+# Healthcheck Controller
+GET     /                                   controllers.HealthcheckController.index()
+# Websocket Controller
+GET     /api/ws                             controllers.WebSocketController.index
+
+# User Controller
+POST    /users                              controllers.UserController.create
+PATCH   /users                              controllers.UserController.update
+
+
+
+# User Session Controller
+POST    /users/sessions                     controllers.UserSessionController.create
+GET     /users/sessions                     controllers.UserSessionController.find
+DELETE  /users/sessions                     controllers.UserSessionController.delete
+
+# Workspace Controller
+GET     /me/workspaces                      controllers.WorkspaceController.get
+POST    /workspaces                         controllers.WorkspaceController.create
+DELETE  /workspaces                         controllers.WorkspaceController.delete
+PATCH   /workspaces                         controllers.WorkspaceController.edit
+
+# WorkspaceItems Controller
+# POST    /workspaceitems                    controllers.WorkspaceItemsController.create
+
+# ProjectsItem Controller
+POST    /projectitems/template               controllers.ProjectItemsController.createTemplate
+POST    /projectitems/task                   controllers.ProjectItemsController.createTask
+
+# Template Controller
+GET     /templates/:idWorkspace               controllers.TemplateController.get(idWorkspace: UUID)
+
+# Template Subtask Controller
+POST    /template/subtasks                    controllers.TemplateSubtaskController.create
+PATCH   /template/subtasks                    controllers.TemplateSubtaskController.update
+DELETE  /template/subtasks                    controllers.TemplateSubtaskController.delete
+
+# Template Task Controller
+POST    /template/tasks                       controllers.TemplateTaskController.create
+PATCH   /template/tasks                       controllers.TemplateTaskController.update
+DELETE  /template/tasks                       controllers.TemplateTaskController.delete
+
+# Workspace Collab Controller
+
+GET     /me/collabs/workspaces              controllers.WorkspaceCollabController.get
+#GET     /workspaces/:id/users/:nameOrEmail             controllers.WorkspaceCollabController.search(id:UUID, nameOrEmail:String)
+
+# Task Controller
+GET     /projects/:id/tasks                 controllers.TaskController.get(id: UUID)
+POST    /tasks                              controllers.TaskController.create
+PATCH   /tasks                              controllers.TaskController.update
+DELETE  /tasks                              controllers.TaskController.delete
+
+# SubTask Controller
+GET     /tasks/:id/subtasks                 controllers.SubtaskController.get(id:UUID)
+GET     /projects/:id/subtasks              controllers.SubtaskController.all(id:UUID)
+POST    /subtasks                              controllers.SubtaskController.create
+PATCH   /subtasks                              controllers.SubtaskController.update
+DELETE  /subtasks                              controllers.SubtaskController.delete
+
+# Workspace Members Controller
+GET     /workspaces/:id/members             controllers.WorkspaceMemberController.get(id:UUID)
+DELETE  /me/workspaces/members              controllers.WorkspaceMemberController.delete
+
+# Workspace Member Invite Controller
+PATCH   /invites                            controllers.WorkspaceInviteController.edit
+POST    /invites                            controllers.WorkspaceInviteController.create
+GET     /me/invites                         controllers.WorkspaceInviteController.get
+DELETE  /invites                            controllers.WorkspaceInviteController.delete
+
+# Project Controller
+POST     /projects                           controllers.ProjectController.create
+GET      /projects/workspaces/:idWorkspace   controllers.ProjectController.get(idWorkspace: UUID)
+DELETE   /projects                           controllers.ProjectController.delete
+PATCH    /projects                           controllers.ProjectController.update
+
+# Project Members Controller
+POST    /projects/members                   controllers.ProjectMemberController.create
+GET     /projects/members/:idWorkspace      controllers.ProjectMemberController.get(idWorkspace: UUID)
+
+DELETE  /projects/members/:idProject/:username    controllers.ProjectMemberController.delete(idProject: UUID, username: String)
+
+# Project Owner Controller
+GET     /projects/owners/:idOwner           controllers.ProjectOwnerController.find(idOwner: UUID)
+
+
+# Mailer Controller
+#POST   /otps                                 controllers.MailerController.create
+#POST   /otps/validations                     controllers.MailerController.validate
+
+# Manager Controller
+GET     /managers/:idWorkspace              controllers.ManagerController.get(idWorkspace: UUID)
+POST    /managers                           controllers.ManagerController.create
+DELETE  /managers                           controllers.ManagerController.delete
+
+# Notification Controller
+GET     /notifications                      controllers.NotificationController.get
+PATCH   /notifications/:idNotification      controllers.NotificationController.update(idNotification: UUID)
+DELETE  /notifications/:idNotification      controllers.NotificationController.delete(idNotification: UUID)
+
+# Websockets Controller
+##GET     /sockets                            controllers.WebsocketController.socket
+
+#GET     /assets/*file                       controllers.Assets.versioned(path="/public", file: Asset)
