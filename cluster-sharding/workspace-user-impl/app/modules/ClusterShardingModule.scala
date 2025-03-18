@@ -18,8 +18,6 @@ import com.google.inject.Provides
 import com.google.inject.Singleton
 
 class ClusterShardingModule extends AbstractModule with PekkoGuiceSupport {
-  private val WorkspaceUserManagerTypeKey =
-    EntityTypeKey[WorkspaceUserManager.Action]("WorkspaceUserManager")
 
   @Provides
   @Singleton
