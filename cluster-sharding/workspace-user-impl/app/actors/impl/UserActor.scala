@@ -1,4 +1,5 @@
 package actors
+package impl
 
 import javax.inject.*
 
@@ -28,7 +29,7 @@ import org.apache.pekko.cluster.sharding.typed.scaladsl.EntityRef
 
 private case class UserActor @Inject() (
     id: IdUser,
-    currentIdWorkspace: Option[IdWorkspace] = None
+    currentIdWorkspace: Option[IdWorkspace] = None,
 )(using val context: ActorContext[UserActor.Action])
     extends UserActorMixin {
   import UserActor.*
@@ -52,6 +53,7 @@ private case class UserActor @Inject() (
         Behaviors.same
 
       case Terminate =>
+        currentIdWorkspace.map(x => ???)
         Behaviors.stopped
     }
 
