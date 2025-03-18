@@ -31,16 +31,6 @@ class TestController @Inject() (
 )(using Scheduler, ExecutionContext)
     extends BaseController {
 
-  given Timeout = 1.seconds
-
-  val TypeKey = EntityTypeKey[Counter.Command]("Counter")
-  // val TypeKey2 = EntityTypeKey[Counter.Command]("Counter")
-  val test = sharding.init(
-    Entity(TypeKey)(createBehavior =
-      entityContext => Counter(entityContext.entityId)
-    )
-  )
-
   def index() = Action { implicit request: Request[AnyContent] =>
     Ok(Json.obj("message" -> "connected"))
   }
