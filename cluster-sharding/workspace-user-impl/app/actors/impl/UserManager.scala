@@ -1,10 +1,12 @@
 package actors
+package impl
 
 import scala.concurrent.duration.*
 
 import org.apache.pekko.actor.typed.ActorRef
 import org.apache.pekko.actor.typed.Behavior
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
+import org.apache.pekko.actor.typed.Terminated
 
 object UserManager {
   sealed trait Action
@@ -19,8 +21,8 @@ object UserManager {
 
   private def manageUsers(
       activeUsers: Set[ActorRef[UserActor.Action]]
-  ): Behavior[Action] =
-    Behaviors.receive { (_, message) =>
+  ): Behavior[Action] = Behaviors
+    .receive[UserManager.Action] { (context, message) =>
       message match {
 
         case Get(replyTo) =>
@@ -28,6 +30,7 @@ object UserManager {
           Behaviors.same
 
         case Create(actor) =>
+          context.watch(actor)
           manageUsers(activeUsers + actor)
 
         case Remove(actor) if activeUsers.size == 1 =>
@@ -36,8 +39,15 @@ object UserManager {
         case Remove(actor) =>
           manageUsers(activeUsers - actor)
 
-        case Terminate =>
-          Behaviors.stopped
+        case Terminate => Behaviors.stopped
+
       }
     }
+    .receiveSignal { case (context, Terminated(actor)) =>
+      context.stop(actor)
+      activeUsers.size match
+        case 1 => Behaviors.stopped
+        case _ => manageUsers(activeUsers.filterNot(_ == actor))
+    }
+
 }
