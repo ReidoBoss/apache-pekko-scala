@@ -11,10 +11,7 @@ import org.apache.pekko.cluster.sharding.typed.scaladsl.EntityTypeKey
 import org.apache.pekko.cluster.sharding.typed.scaladsl.Entity
 import org.apache.pekko.cluster.sharding.typed.scaladsl.EntityRef
 
-import actors.UserManager
-import actors.IdUser
-import actors.WorkspaceUserManager
-import actors.IdWorkspace
+import actors.*
 
 import com.google.inject.AbstractModule
 import com.google.inject.Provides
