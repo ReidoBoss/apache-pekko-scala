@@ -21,10 +21,11 @@ import com.google.inject.Provides
 import com.google.inject.Singleton
 
 class ClusterShardingModule extends AbstractModule with PekkoGuiceSupport {
-  lazy val WorkspaceUserManagerTypeKey =
+  private val WorkspaceUserManagerTypeKey =
     EntityTypeKey[WorkspaceUserManager.Action]("WorkspaceUserManager")
 
-  lazy val UserManagerTypeKey = EntityTypeKey[UserManager.Action]("UserManager")
+  private val UserManagerTypeKey =
+    EntityTypeKey[UserManager.Action]("UserManager")
 
   @Provides
   @Singleton
@@ -60,21 +61,15 @@ class ClusterShardingModule extends AbstractModule with PekkoGuiceSupport {
   @Singleton
   def provideUserManager(
       sharding: ClusterSharding
-  ): IdUser => EntityRef[UserManager.Action] = {
-    val TypeKey = EntityTypeKey[UserManager.Action]("UserManager")
-    (idUser: IdUser) => sharding.entityRefFor(TypeKey, idUser.toString())
-  }
+  ): IdUser => EntityRef[UserManager.Action] = (idUser: IdUser) =>
+    sharding.entityRefFor(UserManagerTypeKey, idUser.toString())
 
   @Provides
   @Singleton
   def provideWorkspaceUserManager(
       sharding: ClusterSharding
-  ): IdWorkspace => EntityRef[WorkspaceUserManager.Action] = {
-    val TypeKey =
-      EntityTypeKey[WorkspaceUserManager.Action]("WorkspaceUserManager")
+  ): IdWorkspace => EntityRef[WorkspaceUserManager.Action] =
     (idWorkspace: IdWorkspace) =>
-      sharding.entityRefFor(TypeKey, idWorkspace.toString())
-
-  }
+      sharding.entityRefFor(WorkspaceUserManagerTypeKey, idWorkspace.toString())
 
 }
