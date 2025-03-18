@@ -6,9 +6,7 @@ import javax.inject.*
 import scala.concurrent.duration.*
 import scala.concurrent.Future
 
-import play.api.libs.json.JsValue
-import play.api.libs.json.JsResult
-import play.api.libs.json.Json
+import play.api.libs.json.*
 
 import org.apache.pekko
 import pekko.actor.typed.ActorRef
@@ -25,7 +23,6 @@ import pekko.actor.typed.Behavior
 import pekko.actor.typed.scaladsl.Behaviors
 import pekko.stream.scaladsl.Source
 import pekko.actor.typed.ActorSystem
-import org.apache.pekko.cluster.sharding.typed.scaladsl.EntityRef
 
 private case class UserActor @Inject() (
     id: IdUser,
