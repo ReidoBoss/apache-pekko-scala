@@ -4,6 +4,7 @@ package impl
 import org.apache.pekko.actor.typed.ActorRef
 import org.apache.pekko.actor.typed.Behavior
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
+import org.apache.pekko.actor.typed.Terminated
 
 object WorkspaceUserManager {
   sealed trait Action
@@ -23,25 +24,31 @@ object WorkspaceUserManager {
   private def manageWorkspaceUsers(
       users: Set[(IdUser, ActorRef[WorkspaceUserManager.Action])]
   ): Behavior[Action] = {
-    Behaviors.receive { (context, message) =>
-      message match
-        case Get(replyTo) =>
-          replyTo ! users
-          Behaviors.same
+    Behaviors
+      .receive[Action] { (context, message) =>
+        message match
+          case Get(replyTo) =>
+            replyTo ! users
+            Behaviors.same
 
-        case Create(user) =>
-          manageWorkspaceUsers(users + user)
+          case Create(user) =>
+            context.watch(user._2)
+            manageWorkspaceUsers(users + user)
 
-        case Remove(user) if users.size == 1 =>
-          Behaviors.stopped
+          case Remove(user) if users.size == 1 =>
+            Behaviors.stopped
 
-        case Remove(actor) =>
-          manageWorkspaceUsers(users.filter(_._2 != actor))
+          case Remove(actor) =>
+            manageWorkspaceUsers(users.filter(_._2 != actor))
 
-        case Terminate =>
-          Behaviors.stopped
-
-    }
+          case Terminate =>
+            Behaviors.stopped
+      }
+      .receiveSignal { case (_, Terminated(actor)) =>
+        users.size match
+          case 1 => Behaviors.stopped
+          case _ => manageWorkspaceUsers(users.filterNot(_._2 == actor))
+      }
   }
 
 }
