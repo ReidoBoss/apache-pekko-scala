@@ -15,10 +15,10 @@ It ensures that user actors are **created, tracked, and removed efficiently** wh
 
 ## 🚀 Features
 
-✅ **Distributed actor management** – Ensures unique actor instances across the cluster.
-✅ **Automatic cleanup** – Stops `UserManager` when all user actors are removed.
-✅ **WebSocket handling** – Supports real-time communication via streams.
-✅ **Cluster Sharding integration** – Uses entity sharding for efficient user tracking.
+- **Distributed actor management** – Ensures unique actor instances across the cluster.
+- **Automatic cleanup** – Stops `UserManager` when all user actors are removed.
+- **WebSocket handling** – Supports real-time communication via streams.
+- **Cluster Sharding integration** – Uses entity sharding for efficient user tracking.
 
 ---
 
